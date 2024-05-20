@@ -88,68 +88,88 @@
             <button id="run-btn">Run</button>
         </div>
         <div class="buttons">
-          <button id="skip-btn">Skip</button>
+            <button id="prev-btn">Previous</button>
+            <button id="skip-btn">Skip</button>
             <button id="next-btn">Next</button>
         </div>
     </div>
     <script>
-                function start() {
-          return 'idle';
-      }
+                    function start() {
+                return 'idle';
+            }
 
-      function run(state) {
-          if (state === 'idle') {
-              return 's1';
-          }
-          return state;
-      }
+            function run(state) {
+                if (state === 'idle') {
+                    return 's1';
+                }
+                return state;
+            }
 
-      function next(state) {
-          const states = ['s1', 's2', 's3', 's4'];
-          const index = states.indexOf(state);
-          if (index !== -1) {
-              return states[(index + 1) % states.length];
-          }
-          return state;
-      }
+            function next(state) {
+                const states = ['s1', 's2', 's3', 's4'];
+                const index = states.indexOf(state);
+                if (index !== -1) {
+                    return states[(index + 1) % states.length];
+                }
+                return state;
+            }
 
-      function prev(state) {
-          // To be implemented
-          return state;
-      }
+            function prev(state) {
+                const states = ['s1', 's2', 's3', 's4'];
+                const index = states.indexOf(state);
+                if (index !== -1) {
+                    return states[(index - 1 + states.length) % states.length];
+                }
+                return state;
+            }
 
-      function skip(state) {
-          // To be implemented
-          return state;
-      }
+            function skip(state) {
+                if (state === 's1') {
+                    return 's3';
+                } else if (state === 's2') {
+                    return 's4';
+                } else if (state === 's3') {
+                    return 's1';
+                } else if (state === 's4') {
+                    return 's2'
+                }
+                return state;
+            }
 
-      function home(state) {
-          // To be implemented
-          return state;
-      }
+            document.addEventListener('DOMContentLoaded', () => {
+                let state = start();
+                const stateDisplay = document.getElementById('state-display');
+                const runBtn = document.getElementById('run-btn');
+                const nextBtn = document.getElementById('next-btn');
+                const prevBtn = document.getElementById('prev-btn'); // Assuming there's a prev button in the HTML
+                const skipBtn = document.getElementById('skip-btn'); // Assuming there's a skip button in the HTML
 
-      document.addEventListener('DOMContentLoaded', () => {
-          let state = start();
-          const stateDisplay = document.getElementById('state-display');
-          const runBtn = document.getElementById('run-btn');
-          const nextBtn = document.getElementById('next-btn');
+                function updateDisplay() {
+                    stateDisplay.textContent = `State: ${state}`;
+                }
 
-          function updateDisplay() {
-              stateDisplay.textContent = `State: ${state}`;
-          }
+                runBtn.addEventListener('click', () => {
+                    state = run(state);
+                    updateDisplay();
+                });
 
-          runBtn.addEventListener('click', () => {
-              state = run(state);
-              updateDisplay();
-          });
+                nextBtn.addEventListener('click', () => {
+                    state = next(state);
+                    updateDisplay();
+                });
 
-          nextBtn.addEventListener('click', () => {
-              state = next(state);
-              updateDisplay();
-          });
+                prevBtn.addEventListener('click', () => {
+                    state = prev(state);
+                    updateDisplay();
+                });
 
-          updateDisplay();
-      });
+                skipBtn.addEventListener('click', () => {
+                    state = skip(state);
+                    updateDisplay();
+                });
+
+                updateDisplay();
+            });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
